@@ -15,11 +15,12 @@ import java.util.List;
 @AllArgsConstructor
 @Data
 public class Feedback {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, length = 500)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String originalFeedback;
 
     @Enumerated(EnumType.STRING)
@@ -32,6 +33,4 @@ public class Feedback {
 
     @Column(name = "dt_register", updatable = false, insertable = true)
     private LocalDateTime dtRegister;
-
-
 }

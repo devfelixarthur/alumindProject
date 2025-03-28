@@ -1,8 +1,6 @@
 package com.api.v1.alumind.entities;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -26,7 +24,10 @@ public class RequestedFeature {
     @Column(nullable = false, columnDefinition = "TEXT")
     private String reason;
 
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "feedback_id", nullable = false)
+    private Feedback feedback;
+
     @Column(name = "dt_register", updatable = false, insertable = true)
     private LocalDateTime dtRegister;
-
 }
