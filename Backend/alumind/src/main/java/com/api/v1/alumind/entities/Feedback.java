@@ -1,6 +1,7 @@
 package com.api.v1.alumind.entities;
 
 import com.api.v1.alumind.enums.Sentiment;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,6 +30,7 @@ public class Feedback {
 
     @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "feedback_id")
+    @JsonManagedReference
     private List<RequestedFeature> requestedFeatures;
 
     @Column(name = "dt_register", updatable = false, insertable = true)

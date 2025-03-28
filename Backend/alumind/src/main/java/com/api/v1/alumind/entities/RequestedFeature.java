@@ -1,5 +1,6 @@
 package com.api.v1.alumind.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -26,6 +27,7 @@ public class RequestedFeature {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "feedback_id", nullable = false)
+    @JsonBackReference
     private Feedback feedback;
 
     @Column(name = "dt_register", updatable = false, insertable = true)
