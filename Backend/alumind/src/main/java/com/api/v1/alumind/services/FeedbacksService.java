@@ -110,6 +110,10 @@ public class FeedbacksService {
         LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
 
         List<Feedback> feedbacks = feedbackRepository.findAllByDtRegisterBetween(startDateTime, endDateTime);
+        
+        if (feedbacks.isEmpty()){
+            throw new NotFoundException("No feedbacks found for the specified date range.");
+        }
 
         Long count = Long.valueOf(feedbacks.size());
 
