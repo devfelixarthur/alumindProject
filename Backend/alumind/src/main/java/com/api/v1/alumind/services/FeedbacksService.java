@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import jakarta.transaction.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -34,15 +35,17 @@ public class FeedbacksService {
         Feedback feedback = new Feedback();
         feedback.setSentiment(responseLLMDTO.getSentiment());
         feedback.setOriginalFeedback(requestRegisterFeedbackDTO.feedback());
+        feedback.setDtRegister(LocalDateTime.now());
 
         Feedback savedFeedback = feedbackRepository.save(feedback);
 
         List<RequestedFeature> requestedFeatures = responseLLMDTO.getReasons().stream()
                 .map(reasons -> {
                     RequestedFeature requestedFeature = new RequestedFeature();
-                    requestedFeature.setCode(responseLLMDTO.getCode());
                     requestedFeature.setReason(reasons.getReason());
-
+                    requestedFeature.setCode(reasons.getCode());
+                    requestedFeature.setFeedback(savedFeedback);
+                    requestedFeature.setDtRegister(LocalDateTime.now());
                     requestedFeatureRepository.save(requestedFeature);
 
                     return requestedFeature;

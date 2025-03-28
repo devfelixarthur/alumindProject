@@ -5,5 +5,6 @@ import lombok.Data;
 public enum Sentiment {
     POSITIVO,
     NEGATIVO,
+    NEUTRO,
     INCONCLUSIVO
 }

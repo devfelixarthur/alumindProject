@@ -8,10 +8,7 @@
     @NoArgsConstructor
     @AllArgsConstructor
     @Data
-    @Getter
-    @Setter
     public class ResponseLLMDTO {
         private Sentiment sentiment;
-        private String code;
         private List<RequestedFeatureDTO> reasons;
     }
