@@ -1,5 +1,10 @@
 package com.api.v1.alumind.utils;
 
+import com.api.v1.alumind.dtos.reponses.RequestedFeatureDTO;
+import org.apache.coyote.Request;
+
+import java.util.List;
+
 public class PromptUtils {
     public static String getPromptAnalysis(String feedback) {
         return String.format(
@@ -40,6 +45,41 @@ public class PromptUtils {
                         "Não deve ultrapassar 75 caracteres. Não gere uma nova razão, apenas forneça o novo código.\n" +
                         "Retorne apenas o novo código como uma string, nada mais.",
                 reason
+        );
+    }
+
+    public static String getPromptAnalysisFeatures(List<RequestedFeatureDTO> reason) {
+        return String.format(
+                "Você é um analista de dados especializado em identificar padrões e tendências em feedback de usuários. Sua tarefa é analisar a lista de sugestões de funcionalidades fornecida e identificar as queixas e padrões mais comuns nas *razões* apresentadas, atribuindo pesos para indicar a frequência e relevância de cada necessidade.\n\n" +
+                        "Instruções:\n\n" +
+                        "1.  Análise de Padrões nas Razões:\n" +
+                        "    * Analise as *razões* fornecidas para cada funcionalidade.\n" +
+                        "    * Identifique padrões e temas comuns nas necessidades dos usuários.\n" +
+                        "    * Agrupe as funcionalidades com base nesses padrões.\n\n" +
+                        "2.  Atribuição de Pesos:\n" +
+                        "    * Atribua um peso a cada padrão identificado com base na frequência com que aparece nas *razões*.\n" +
+                        "    * Considere a relevância do padrão para a melhoria da plataforma ao ajustar os pesos.\n\n" +
+                        "3.  Formato de Saída:\n" +
+                        "    * Retorne uma lista de objetos JSON, onde cada objeto representa um padrão identificado.\n" +
+                        "    * Cada objeto deve conter uma descrição do padrão, uma lista dos códigos de funcionalidades associados a ele e o peso atribuído.\n" +
+                        "    * A lista deve ser ordenada por peso, do maior para o menor.\n" +
+                        "    * A resposta deve ser em Português do Brasil (PT-BR).\n\n" +
+                        "Exemplo de Saída:\n\n" +
+                        "[\n" +
+                        "    {\n" +
+                        "        \"padrão\": \"Melhoria da Interface e Usabilidade\",\n" +
+                        "        \"códigos\": [\"INTERFACE_INTUITIVA\", \"USABILIDADE_NAVEGACAO_INTUITIVA\", \"INTERFACE_OTIMIZADA\", \"PERFIL_EDITARFACIL\", \"EDITAR_PERFIL\"],\n" +
+                        "        \"peso\": 3\n" +
+                        "    },\n" +
+                        "    {\n" +
+                        "        \"padrão\": \"Engajamento e Comunidade\",\n" +
+                        "        \"códigos\": [\"FORUM_ATIVIDADE\", \"FORUM_ENGANJAMENTO\", \"COMUNIDADE_ATIVA\"],\n" +
+                        "        \"peso\": 2\n" +
+                        "    },...\n" +
+                        "]\n\n" +
+                        "Lista de Sugestões de Funcionalidades:\n\n" +
+                        "%s",
+                reason.toString()
         );
     }
 }
