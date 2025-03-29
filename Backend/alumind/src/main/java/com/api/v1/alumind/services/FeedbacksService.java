@@ -169,7 +169,6 @@ public class FeedbacksService {
         return bigDecimal.doubleValue();
     }
 
-
     @Transactional
     public ReponseFeedbascksbyFieldsDTO searchFeedbacksByFields(Long id, String sentiment, Integer size, Integer page) {
         if (size > 100 || size <= 0) {
