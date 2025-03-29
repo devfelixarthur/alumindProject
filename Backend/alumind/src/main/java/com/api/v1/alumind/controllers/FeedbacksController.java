@@ -4,6 +4,7 @@ import com.api.v1.alumind.dtos.reponses.ReponseFeedbascksbyFieldsDTO;
 import com.api.v1.alumind.dtos.reponses.ReponseRegisterFeedbackDTO;
 import com.api.v1.alumind.dtos.reponses.SemanalMetricsDTO;
 import com.api.v1.alumind.dtos.requests.RequestRegisterFeedbackDTO;
+import com.api.v1.alumind.entities.Feedback;
 import com.api.v1.alumind.services.FeedbacksService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,6 +38,12 @@ public class FeedbacksController {
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<SemanalMetricsDTO> registerFeedback(@RequestParam String dtStart, @RequestParam String dtEnd) {
         return ResponseEntity.ok(feedbacksService.semanalMetrics(dtStart, dtEnd));
+    }
+
+    @GetMapping("/feedback/{id}")
+    @ResponseBody
+    public Feedback getFeedbackDetails(@PathVariable Long id) {
+        return feedbacksService.getFeedbackDetails(id);
     }
 
 }
