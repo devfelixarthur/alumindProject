@@ -12,7 +12,7 @@ export default function Dashboard() {
   return (
     <Box
       width="100vw"
-      height="100vh"
+      minHeight="100vh"
       p={4}
       bg="gray.100"
       overflow="hidden"

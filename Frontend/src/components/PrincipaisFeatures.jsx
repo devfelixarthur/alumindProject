@@ -20,7 +20,7 @@ const featuresData = [
   "Facilitar a Edição do Perfil do Usuário(Peso: 1)",
   "Incentivo à Avaliação da Plataforma(Peso: 1)",
   "Destaque de Avaliações Positivas(Peso: 1)",
-  "Integração com Outras Ferramentas(Peso: 1)"
+  "Integração com Outras Ferramentas(Peso: 1)"  
 ];
 
 const ITEMS_PER_PAGE = 5;

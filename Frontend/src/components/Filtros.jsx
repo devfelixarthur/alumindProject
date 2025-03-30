@@ -23,9 +23,6 @@ const Filtros = ({ onFilter }) => {
           <Button leftIcon={<Icon as={FiSearch} />}   onClick={onFilter} colorScheme="blackAlpha">
             Buscar
           </Button>
-          <Button leftIcon={<Icon as={FiMail} />} variant="outline">
-            Enviar Relatório
-          </Button>
         </Flex>
       </VStack>
     </Box>

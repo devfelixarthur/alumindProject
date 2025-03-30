@@ -6,9 +6,10 @@ import {
   Button,
   Flex,
   Text,
-  Spinner,
+  Spinner
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
+import ModalDetails from "./ModalDetails";
 
 // 🧪 MOCK API SIMULADA
 const mockLoadData = (page = 0) => {
@@ -39,6 +40,7 @@ const mockLoadData = (page = 0) => {
   });
 };
 
+
 const PAGE_SIZE_LOCAL = 10;
 
 export default function FeedbacksTable() {
@@ -46,6 +48,9 @@ export default function FeedbacksTable() {
   const [currentPageIndex, setCurrentPageIndex] = useState(0);
   const [loading, setLoading] = useState(false);
   const [totalRecords, setTotalRecords] = useState(0);
+  const [selectedFeedbackId, setSelectedFeedbackId] = useState(null);
+  const [open, setOpen] = useState(false);
+
 
   const currentDataBlock = Math.floor((currentPageIndex * PAGE_SIZE_LOCAL) / 100);
 
@@ -80,6 +85,19 @@ export default function FeedbacksTable() {
     setCurrentPageIndex((prev) => Math.max(0, prev - 1));
   };
 
+  const handleViewDetails = async (id) => {
+    setLoading(true);
+    setSelectedFeedbackId(id);
+    setLoading(false);
+    setOpen(true)
+  };
+
+  const handleCloseModal = () => {
+    setOpen(false);
+  };
+  
+
+
   return (
     <Stack spacing={4} width="full" h="100%">
       <Heading size="md">Lista de Feedbacks</Heading>
@@ -91,20 +109,21 @@ export default function FeedbacksTable() {
         flex="1"
         minH="75%"
       >
-        <Table.Root variant="simple" width="full">
+        <Table.Root variant="simple" width="full" minH="100%">
           <Table.Header>
             <Table.Row>
               <Table.ColumnHeader>Id</Table.ColumnHeader>
               <Table.ColumnHeader>Feedback</Table.ColumnHeader>
               <Table.ColumnHeader>Data</Table.ColumnHeader>
               <Table.ColumnHeader>Sentimento</Table.ColumnHeader>
+              <Table.ColumnHeader>Ações</Table.ColumnHeader>
             </Table.Row>
           </Table.Header>
           <Table.Body>
             {loading ? (
               <Table.Row>
                 <Table.Cell colSpan={3}>
-                  <Flex justify="center" py={6}>
+                  <Flex justify="center">
                     <Spinner />
                   </Flex>
                 </Table.Cell>
@@ -116,6 +135,13 @@ export default function FeedbacksTable() {
                   <Table.Cell>{item.feedback}</Table.Cell>
                   <Table.Cell>{item.data}</Table.Cell>
                   <Table.Cell>{item.sentiment}</Table.Cell>
+                  <Table.Cell>
+                    <Button 
+                    aria-label="Ver"
+                    onClick={() => handleViewDetails(item.id)}
+                    size="xs">Ver
+                    </Button>
+                  </Table.Cell>
                 </Table.Row>
               ))
             )}
@@ -143,6 +169,12 @@ export default function FeedbacksTable() {
           Total: {totalRecords}
         </Text>
       </Flex>
+
+      <ModalDetails
+        id={selectedFeedbackId}
+        onClose={handleCloseModal}
+        open={open}
+      />
     </Stack>
   );
 }
