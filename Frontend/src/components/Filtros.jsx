@@ -59,6 +59,7 @@ const Filtros = ({ onFilter, defaultStartDate, defaultEndDate}) => {
           />
           <Input
             placeholder="ID"
+            type="number"
             flex={1}
             value={id}
             onChange={(e) => setId(e.target.value)}

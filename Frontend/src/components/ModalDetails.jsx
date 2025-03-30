@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { Modal, Box, Button, Typography, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 import { getFeedbackDetails } from '@/services/apiService';
 
-// Modal Component
 const ModalDetails = ({ id, open, onClose }) => {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -70,7 +69,6 @@ const ModalDetails = ({ id, open, onClose }) => {
               <Typography variant="body1"><strong>Sentimento:</strong> {data.sentiment}</Typography>
               <Typography variant="body1"><strong>Data de Registro:</strong> {data.dtRegister}</Typography>
 
-              {/* Requested Features Table */}
               {data.requestedFeatures && data.requestedFeatures.length > 0 && (
                 <Box sx={{ 
                     mt: 2,

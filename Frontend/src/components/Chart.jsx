@@ -15,8 +15,6 @@ const COLORS = {
   Inconclusivo: '#FF9800'
 };
 
-//  MOCK para testes locais
-
 export default function Chart({data}) {
   const [activeKeys] = useState([
     'Positivo', 'Negativo', 'Neutro', 'Inconclusivo'
