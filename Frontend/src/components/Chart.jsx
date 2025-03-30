@@ -42,7 +42,7 @@ export default function Chart({data}) {
   return (
     <Box w="full">
       <Heading size="md" mb={4}>
-        % por sentimentos
+        % por sentimentos (Total: {total})
       </Heading>
       <ResponsiveContainer width="100%" height={375}>
         <PieChart>

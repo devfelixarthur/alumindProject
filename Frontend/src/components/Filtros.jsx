@@ -13,28 +13,32 @@ import {
 import { FiSearch } from 'react-icons/fi';
 import { useState, useEffect } from 'react';
 
-const options = createListCollection ({
+const options = createListCollection({
   items: [
     { label: "Positivo", value: "POSITIVO" },
     { label: "Negativo", value: "NEGATIVO" },
     { label: "Neutro", value: "NEUTRO" },
     { label: "Inconclusivo", value: "INCONCLUSIVO" },
   ],
-})
+});
 
-const Filtros = ({ onFilter, defaultStartDate, defaultEndDate }) => {
+const Filtros = ({ onFilter, defaultStartDate, defaultEndDate}) => {
   const [startDate, setStartDate] = useState(defaultStartDate);
   const [endDate, setEndDate] = useState(defaultEndDate);
   const [id, setId] = useState('');
-  const [sentiment] = useState('');
+  const [sentiment, setSentiment] = useState('');
+  const [loading, setLoading] = useState(false)
+
 
   useEffect(() => {
     setStartDate(defaultStartDate);
     setEndDate(defaultEndDate);
   }, [defaultStartDate, defaultEndDate]);
 
-  const handleApplyFilters = () => {
-    onFilter({ startDate, endDate, sentiment, id });
+  const handleApplyFilters = async () => {
+    setLoading(!loading)
+    await onFilter({ startDate, endDate, sentiment, id });
+    setLoading(loading)
   };
 
   return (
@@ -61,7 +65,7 @@ const Filtros = ({ onFilter, defaultStartDate, defaultEndDate }) => {
           />
           <Select.Root
               collection={options}
-              defaultValue={["spirited_away"]}
+              onChange={(e) => setSentiment(e.target.value)}
               width="300px"
             >
               <Select.HiddenSelect/>
@@ -89,9 +93,15 @@ const Filtros = ({ onFilter, defaultStartDate, defaultEndDate }) => {
             </Select.Root>
         </HStack>
         <Flex gap={4}>
-          <Button leftIcon={<Icon as={FiSearch} />} onClick={handleApplyFilters} colorScheme="blackAlpha">
-            Buscar
-          </Button>
+            <Button
+              loading={loading} 
+              onClick={handleApplyFilters}
+              colorScheme="blackAlpha" 
+              loadingText="Buscando..."
+              spinnerPlacement="start"
+            >
+              Buscar
+            </Button>
         </Flex>
       </VStack>
     </Box>
