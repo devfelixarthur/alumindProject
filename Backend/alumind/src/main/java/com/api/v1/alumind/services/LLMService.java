@@ -192,7 +192,7 @@ public class LLMService {
             case "INCONCLUSIVO":
                 return Sentiment.INCONCLUSIVO;
             default:
-                throw new BadRequestException("Sentiment value is not recognized: " + sentiment);
+                throw new BadRequestException("Sentiment value is not recognized.");
         }
     }
 

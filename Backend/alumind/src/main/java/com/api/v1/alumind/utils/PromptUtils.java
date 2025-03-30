@@ -13,7 +13,7 @@ public class PromptUtils {
                         "Por favor, siga as instruções abaixo:\n" +
                         "1. Gere um código único para cada sugestão de funcionalidades. Cada código deve ter o formato 'PALAVRA_SEGUNDAPALAVRA' e não deve ultrapassar 75 caracteres. O código deve ter uma associação profunda com a sugestão, a palavra-chave de maior peso.\n" +
                         "2. Para cada sugestão, forneça uma razão que resuma diretamente o que o usuário está sugerindo ou solicitando. A razão deve ser objetiva e ter um máximo de 100 caracteres.\n" +
-                        "3. Classifique o sentimento do feedback como 'POSITIVO', 'NEGATIVO', 'NEUTRO' ou 'INCONCLUSIVO'. O sentimento é crucial para entender a percepção do usuário e deverá ser gerado a partir do feedback enviado.\n" +
+                        "3. Classifique o sentimento do feedback como 'POSITIVO', 'NEGATIVO', 'NEUTRO' ou 'INCONCLUSIVO'. O sentimento é crucial para entender a percepção do usuário e deverá ser gerado a partir do feedback enviado, entenda o contexto do feedback, palavras com bom, ótimo, feliz, são indicativos para sentimentos positivos sempre tente definir qual o sentimento do usuário no contexto do feedback.\n" +
                         "4. Caso o feedback fornecido seja irrelevante, sem sentido ou desconexo, retorne a seguinte mensagem em formato JSON:\n\n" +
                         "{\n" +
                         "  \"mensagem\": \"Não foi possível interpretar o feedback fornecido. Para nos ajudar a entender suas necessidades, por favor, forneça exemplos concretos e descrições detalhadas de suas sugestões ou problemas. Exemplo: 'Gostaria que a função X fosse melhorada porque...' ou 'Encontrei um problema ao usar a função Y...'\n" +
