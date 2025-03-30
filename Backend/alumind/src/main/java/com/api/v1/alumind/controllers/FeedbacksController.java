@@ -34,8 +34,8 @@ public class FeedbacksController {
               @RequestParam(required = false) String sentiment,
               @RequestParam (defaultValue = "30") Integer size,
               @RequestParam (defaultValue = "0") Integer page,
-              @RequestParam (required = false) String dtStart,
-              @RequestParam (required = false) String dtEnd) {
+              @RequestParam (required = false, defaultValue = "") String dtStart,
+              @RequestParam (required = false, defaultValue = "") String dtEnd) {
         return ResponseEntity.ok(feedbacksService.searchFeedbacksByFields(id, sentiment, size, page, dtStart, dtEnd));
     }
 

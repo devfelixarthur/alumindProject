@@ -175,15 +175,20 @@ public class FeedbacksService {
         LocalDate startDate;
         LocalDate endDate;
 
-        try {
-            startDate = LocalDate.parse(dtStart, formatter);
-            endDate = LocalDate.parse(dtEnd, formatter);
+        if (dtStart.isEmpty() || dtEnd.isEmpty()) {
+            endDate = LocalDate.now();
+            startDate = endDate.minusDays(365);
+        } else {
+            try {
+                startDate = LocalDate.parse(dtStart, formatter);
+                endDate = LocalDate.parse(dtEnd, formatter);
 
-            if (startDate.isAfter(endDate)) {
-                throw new BadRequestException("Invalid Date Range", "Start date cannot be after end date.");
+                if (startDate.isAfter(endDate)) {
+                    throw new BadRequestException("Invalid Date Range", "Start date cannot be after end date.");
+                }
+            } catch (DateTimeParseException e) {
+                throw new BadRequestException("Invalid Date Format", "Date must be in dd/MM/yyyy format.");
             }
-        } catch (DateTimeParseException e) {
-            throw new BadRequestException("Invalid Date Format", "Date must be in dd/MM/yyyy format.");
         }
 
         LocalDateTime startDateTime = startDate.atStartOfDay();
@@ -203,7 +208,7 @@ public class FeedbacksService {
                 throw new BadRequestException("Sentiment must be one of the following values: POSITIVO, NEGATIVO, or NEUTRO.");
             }
         }
-        
+
         Page<Feedback> feddbacksPage = feedbackRepository.findFeedbacksByIdAndSentiment(id, sentimentEnum, startDateTime, endDateTime, pageable);
 
         Optional.ofNullable(feddbacksPage)
@@ -227,8 +232,8 @@ public class FeedbacksService {
         result.setInfoPage(infoPage);
 
         return result;
-
     }
+
 
     @Transactional
     public FeedbackDTO getFeedbackDetails(Long id) {
