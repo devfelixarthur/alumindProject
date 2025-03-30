@@ -16,14 +16,8 @@ const COLORS = {
 };
 
 //  MOCK para testes locais
-const mockData = {
-  count: 14,
-  positivesFeedbacks: 5,
-  negativeFeedbacks: 2,
-  neutralFeedbacks: 3
-};
 
-export default function Chart({ data = mockData }) {
+export default function Chart({data}) {
   const [activeKeys] = useState([
     'Positivo', 'Negativo', 'Neutro', 'Inconclusivo'
   ]);

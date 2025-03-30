@@ -89,3 +89,25 @@ export const getFeedbackDetails = async (id) => {
     }
   };
 
+  export const fetchWeeklyMetrics = async (startDate, endDate) => {
+    console.log(startDate)
+    console.log(endDate)
+    try {
+      const response = await api.get(`/feedbacks/semanalMetrics?dtStart=${formatDate(startDate)}&dtEnd=${formatDate(endDate)}`);
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  };
+
+  
+
+  const formatDate = (dateString) => {
+    console.log(dateString)
+    const year = dateString.substring(0, 4);
+    const month = dateString.substring(5, 7);
+    const day = dateString.substring(8, 10);
+    console.log(`${day}/${month}/${year}`)
+    return `${day}/${month}/${year}`;
+  };
