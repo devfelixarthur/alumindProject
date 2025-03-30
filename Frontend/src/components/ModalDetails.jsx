@@ -1,51 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Modal, Box, Button, Typography, CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
-
-// Mock API request function
-const mockFetchFeedbackDetails = (id) => {
-  return new Promise((resolve, reject) => {
-    setTimeout(() => {
-      if (Math.random() > 0.1) { // 80% chance of success
-        resolve({
-          id,
-          originalFeedback: "Tenho usado o Alumind há algum tempo. Ele funciona bem, mas não me empolga muito.",
-          sentiment: "NEUTRO",
-          requestedFeatures: [
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-            { code: "RECURSO_NOVIDADE", reason: "Implementar novos recursos para tornar o Alumind mais atraente." },
-            { code: "EXPERIENCIA_USUARIO", reason: "Melhorar a experiência do usuário para torná-la mais agradável." },
-          ],
-          dtRegister: "29/03/2025 14:03:22",
-        });
-      } else {
-        reject(new Error('Erro ao carregar os dados, entre com contato com o suporte.'));
-      }
-    }, 1000);
-  });
-};
+import { getFeedbackDetails } from '@/services/apiService';
 
 // Modal Component
 const ModalDetails = ({ id, open, onClose }) => {
@@ -54,24 +9,21 @@ const ModalDetails = ({ id, open, onClose }) => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    if (open) {
-        setData(null);
-        setError(null);
-        setLoading(true); 
-  
-        if (id) {
-          mockFetchFeedbackDetails(id)
-            .then((data) => {
-              setData(data);
-              setLoading(false); 
-            })
-            .catch((error) => {
-              setError(error.message);
-              setLoading(false); 
-            });
-        }
-      }
-    }, [open, id]);
+    if (id && open) {
+      setLoading(true);
+      setError(null);
+      setData(null);
+
+      getFeedbackDetails(id)
+        .then((response) => {
+          setData(response);
+          setLoading(false);
+        })
+        .catch(() => {
+            onClose();
+        });
+    }
+  }, [id, open]);
 
   return (
     <Modal
@@ -94,7 +46,7 @@ const ModalDetails = ({ id, open, onClose }) => {
           p: 4,
         }}
       >
-        <Typography id="modal-title" variant="h6" component="h2">
+        <Typography id="modal-title" variant="h6" component="h2" fontWeight="bold">
           Detalhes do Feedback
         </Typography>
 
@@ -114,7 +66,7 @@ const ModalDetails = ({ id, open, onClose }) => {
           <>
             <Box sx={{ mt: 2 }}>
               <Typography variant="body1"><strong>ID:</strong> {data.id}</Typography>
-              <Typography variant="body1"><strong>Feedback Original:</strong> {data.originalFeedback}</Typography>
+              <Typography variant="body1"><strong>Feedback:</strong> {data.originalFeedback}</Typography>
               <Typography variant="body1"><strong>Sentimento:</strong> {data.sentiment}</Typography>
               <Typography variant="body1"><strong>Data de Registro:</strong> {data.dtRegister}</Typography>
 
@@ -125,7 +77,7 @@ const ModalDetails = ({ id, open, onClose }) => {
                     overflowY: 'auto',
                     maxHeight: '300px',
                  }}>
-                  <Typography variant="h6">Sugestões de Melhorias</Typography>
+                  <Typography variant="h6" fontWeight="bold">Análises do Modelo LLM</Typography>
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 350 }} aria-label="features table">
                       <TableHead>
