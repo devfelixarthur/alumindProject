@@ -110,7 +110,7 @@ public class FeedbacksService {
         LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
 
         List<Feedback> feedbacks = feedbackRepository.findAllByDtRegisterBetween(startDateTime, endDateTime);
-        
+
         if (feedbacks.isEmpty()){
             throw new NotFoundException("No feedbacks found for the specified date range.");
         }
@@ -169,7 +169,6 @@ public class FeedbacksService {
         return bigDecimal.doubleValue();
     }
 
-
     @Transactional
     public ReponseFeedbascksbyFieldsDTO searchFeedbacksByFields(Long id, String sentiment, Integer size, Integer page) {
         if (size > 100 || size <= 0) {
@@ -211,6 +210,16 @@ public class FeedbacksService {
         infoPage.setHasNextPage(feddbacksPage.hasNext());
         result.setInfoPage(infoPage);
 
+        return result;
+
+    }
+
+    @Transactional
+    public FeedbackDTO getFeedbackDetails(Long id) {
+        Feedback feedback = feedbackRepository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Feedback not found."));
+
+        FeedbackDTO result = new FeedbackDTO(feedback);
         return result;
 
     }
