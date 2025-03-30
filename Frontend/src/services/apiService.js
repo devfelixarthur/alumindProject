@@ -99,6 +99,16 @@ export const getFeedbackDetails = async (id) => {
     }
   };
 
+  export const fetchFeedbacks = async (params) => {
+    try {
+      const response = await api.get('/feedbacks/searchFeedbacksByFields', { params });
+      return response.data;
+    } catch (error) {
+      handleError(error);
+      throw error;
+    }
+  };
+
   const formatDate = (dateString) => {
     const year = dateString.substring(0, 4);
     const month = dateString.substring(5, 7);

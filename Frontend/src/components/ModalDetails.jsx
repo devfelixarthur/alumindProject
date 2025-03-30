@@ -77,7 +77,7 @@ const ModalDetails = ({ id, open, onClose }) => {
                     overflowY: 'auto',
                     maxHeight: '300px',
                  }}>
-                  <Typography variant="h6" fontWeight="bold">Análises do Modelo LLM</Typography>
+                  <Typography variant="h6" fontWeight="bold">Análise de Melhorias</Typography>
                   <TableContainer component={Paper}>
                     <Table sx={{ minWidth: 350 }} aria-label="features table">
                       <TableHead>

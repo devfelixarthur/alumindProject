@@ -53,6 +53,13 @@ const endDate = formatDate(today);
       borderRadius="md"
     >
       <VStack spacing={4} height="100%">
+
+      <Box w="full">
+          <h1 style={{ fontSize: '24px', fontWeight: 'bold', alignContent: 'center', textAlign: 'center' }}>Dashboard Feedbacks - Alumind</h1>
+        </Box>
+
+
+
         {/* Filtros */}
         <Box w="full">
           <Filtros 
