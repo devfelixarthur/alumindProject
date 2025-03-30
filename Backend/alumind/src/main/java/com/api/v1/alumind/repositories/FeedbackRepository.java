@@ -16,8 +16,18 @@ import java.util.List;
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> findAllByDtRegisterBetween(LocalDateTime dtStart, LocalDateTime dtEnd);
 
-    @Query("SELECT DISTINCT f FROM Feedback f LEFT JOIN FETCH f.requestedFeatures WHERE " +
+    @Query("SELECT f FROM Feedback f WHERE " +
             "(:id IS NULL OR f.id = :id) AND " +
-            "(:sentiment IS NULL OR f.sentiment = :sentiment)")
-    Page<Feedback> findFeedbacksByIdAndSentiment(@Param("id") Long id, @Param("sentiment") Sentiment sentiment, Pageable pageable);
+            "(:sentiment IS NULL OR f.sentiment = :sentiment) AND " +
+            "(f.dtRegister BETWEEN COALESCE(:startDate, f.dtRegister) AND COALESCE(:endDate, f.dtRegister))")
+    Page<Feedback> findFeedbacksByIdAndSentiment(
+            @Param("id") Long id,
+            @Param("sentiment") Sentiment sentiment,
+            @Param("startDate") LocalDateTime startDate,
+            @Param("endDate") LocalDateTime endDate,
+            Pageable pageable
+    );
+
+
+
 }
