@@ -1,5 +1,6 @@
 package com.api.v1.alumind.controllers;
 
+import com.api.v1.alumind.dtos.reponses.FeedbackDTO;
 import com.api.v1.alumind.dtos.reponses.ReponseFeedbascksbyFieldsDTO;
 import com.api.v1.alumind.dtos.reponses.ReponseRegisterFeedbackDTO;
 import com.api.v1.alumind.dtos.reponses.SemanalMetricsDTO;
@@ -40,9 +41,9 @@ public class FeedbacksController {
         return ResponseEntity.ok(feedbacksService.semanalMetrics(dtStart, dtEnd));
     }
 
-    @GetMapping("/feedback/{id}")
+    @GetMapping("/feedbackDetails/{id}")
     @ResponseBody
-    public Feedback getFeedbackDetails(@PathVariable Long id) {
+    public FeedbackDTO getFeedbackDetails(@PathVariable Long id) {
         return feedbacksService.getFeedbackDetails(id);
     }
 

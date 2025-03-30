@@ -1,14 +1,13 @@
 package com.api.v1.alumind.dtos.reponses;
 
 import com.api.v1.alumind.entities.Feedback;
-import com.api.v1.alumind.entities.RequestedFeature;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Data
@@ -36,4 +35,5 @@ public class FeedbackDTO {
             this.dtRegister = feedback.getDtRegister().format(formatter);
         }
     }
+
 }

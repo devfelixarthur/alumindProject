@@ -215,8 +215,12 @@ public class FeedbacksService {
     }
 
     @Transactional
-    public Feedback getFeedbackDetails(Long id) {
-        return feedbackRepository.findById(id)
+    public FeedbackDTO getFeedbackDetails(Long id) {
+        Feedback feedback = feedbackRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Feedback not found."));
+
+        FeedbackDTO result = new FeedbackDTO(feedback);
+        return result;
+
     }
 }
