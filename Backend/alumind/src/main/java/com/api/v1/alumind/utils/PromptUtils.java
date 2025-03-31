@@ -1,6 +1,7 @@
 package com.api.v1.alumind.utils;
 
 import com.api.v1.alumind.dtos.reponses.RequestedFeatureDTO;
+import com.api.v1.alumind.dtos.reponses.SemanalMetricsDTO;
 import org.apache.coyote.Request;
 
 import java.util.List;
@@ -13,7 +14,7 @@ public class PromptUtils {
                         "Por favor, siga as instruções abaixo:\n" +
                         "1. Gere um código único para cada sugestão de funcionalidades. Cada código deve ter o formato 'PALAVRA_SEGUNDAPALAVRA' e não deve ultrapassar 75 caracteres. O código deve ter uma associação profunda com a sugestão, a palavra-chave de maior peso.\n" +
                         "2. Para cada sugestão, forneça uma razão que resuma diretamente o que o usuário está sugerindo ou solicitando. A razão deve ser objetiva e ter um máximo de 100 caracteres.\n" +
-                        "3. Classifique o sentimento do feedback como 'POSITIVO', 'NEGATIVO', 'NEUTRO' ou 'INCONCLUSIVO'. O sentimento é crucial para entender a percepção do usuário e deverá ser gerado a partir do feedback enviado.\n" +
+                        "3. Classifique o sentimento do feedback como 'POSITIVO', 'NEGATIVO', 'NEUTRO' ou 'INCONCLUSIVO'. O sentimento é crucial para entender a percepção do usuário e deverá ser gerado a partir do feedback enviado, entenda o contexto do feedback, palavras com bom, ótimo, feliz, são indicativos para sentimentos positivos sempre tente definir qual o sentimento do usuário no contexto do feedback.\n" +
                         "4. Caso o feedback fornecido seja irrelevante, sem sentido ou desconexo, retorne a seguinte mensagem em formato JSON:\n\n" +
                         "{\n" +
                         "  \"mensagem\": \"Não foi possível interpretar o feedback fornecido. Para nos ajudar a entender suas necessidades, por favor, forneça exemplos concretos e descrições detalhadas de suas sugestões ou problemas. Exemplo: 'Gostaria que a função X fosse melhorada porque...' ou 'Encontrei um problema ao usar a função Y...'\n" +
@@ -82,4 +83,111 @@ public class PromptUtils {
                 reason.toString()
         );
     }
+
+    public static String getPromptGenerateEmail(SemanalMetricsDTO reason) {
+        // Passando o JSON como string diretamente
+        return String.format(
+                "Você é um assistente inteligente especializado em gerar e-mails em HTML com base em métricas de feedback de usuários. Sua tarefa é criar o corpo de um e-mail com as informações fornecidas.\n\n" +
+                        "Dados fornecidos:\n\n" +
+                        "JSON: %s\n" +
+                        "Instruções para o corpo do e-mail:\n\n" +
+                        "1. Crie um e-mail profissional em HTML com base nos dados acima.\n" +
+                        "2. O e-mail deve incluir uma introdução para o destinatário (Stakeholder), mencionando o resumo dos feedbacks recebidos no período.\n" +
+                        "3. Inclua uma tabela que apresente as métricas de feedbacks, como contagem e porcentagens de feedbacks positivos, negativos e neutros.\n" +
+                        "4. Em seguida, liste as principais funcionalidades solicitadas pelos usuários, com base nos feedbacks.\n" +
+                        "5. Ao final, adicione um rodapé com a mensagem de direitos autorais.\n\n" +
+                        "Formato esperado do corpo do e-mail em HTML:\n\n" +
+                        "<title>Relatório Semanal de Feedbacks</title>\n" +
+                        "                <style>\n" +
+                        "                    body {\n" +
+                        "                        font-family: Arial, sans-serif;\n" +
+                        "                        background-color: #000099;\n" +
+                        "                        color: #333;\n" +
+                        "                    }\n" +
+                        "                    .container {\n" +
+                        "                        max-width: 100vw;\n" +
+                        "                        margin: auto;\n" +
+                        "                        background-color: #fff;\n" +
+                        "                        padding: 20px;\n" +
+                        "                        border-radius: 8px;\n" +
+                        "                        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);\n" +
+                        "                    }\n" +
+                        "                    .header {\n" +
+                        "                         text-align: center;\n" +
+                        "                         background-color: #007bff;\n" +
+                        "                         color: #fff;\n" +
+                        "                         padding: 20px;\n" +
+                        "                         border-radius: 8px 8px 0 0;\n" +
+                        "                     }\n" +
+                        "                    .content {\n" +
+                        "                        margin-top: 20px;\n" +
+                        "                    }\n" +
+                        "                    .content p {\n" +
+                        "                        font-size: 16px;\n" +
+                        "                        line-height: 1.6;\n" +
+                        "                    }\n" +
+                        "                    table {\n" +
+                        "                        width: 65vw;\n" +
+                        "                        margin-left: 5vw;\n" +
+                        "                        border-collapse: collapse;\n" +
+                        "                        align:center\n" +
+                        "                    }\n" +
+                        "                    th, td {\n" +
+                        "                        border: 1px solid #ddd;\n" +
+                        "                        padding: 8px;\n" +
+                        "                        text-align: left;\n" +
+                        "                    }\n" +
+                        "                    th {\n" +
+                        "                        background-color: #f2f2f2;\n" +
+                        "                    }\n" +
+                        "                    .footer {\n" +
+                        "                        background-color: #f9f9f9;\n" +
+                        "                        padding: 10px;\n" +
+                        "                        text-align: center;\n" +
+                        "                        color: #777;\n" +
+                        "                        font-size: 12px;\n" +
+                        "                    }\n" +
+                        "                </style>" +
+                        "<div class=\"content\">\n" +
+                        "   <p><strong>Prezado(a),</strong></p>\n" +
+                        "   <p style=\"font-size: 16px; line-height: 1.6;\">[INSERIR TEXTO AQUI COM BASE NOS DADOS DE FEEDBACK INCLUIR TAMBÉM O PERÍODO QUE SÃO DOS ULTIMOS 7 DIAS.]</p>\n" +
+                        "   <table>\n" +
+                        "       <thead>\n" +
+                        "           <tr>\n" +
+                        "               <th>Métrica</th>\n" +
+                        "               <th>Valor</th>\n" +
+                        "           </tr>\n" +
+                        "       </thead>\n" +
+                        "       <tbody>\n" +
+                        "           <tr>\n" +
+                        "               <td>Feedbacks totais recebidos</td>\n" +
+                        "               <td>[NUMERO TOTAL DE FEEDBACKS RECEBIDOS]</td>\n" +
+                        "           </tr>\n" +
+                        "           <tr>\n" +
+                        "               <td>%% de feedbacks positivos</td>\n" +
+                        "               <td>[NUMERO TOTAL DE FEEDBACKS POSITIVOS]</td>\n" +
+                        "           </tr>\n" +
+                        "           <tr>\n" +
+                        "               <td>%% de feedbacks negativos</td>\n" +
+                        "               <td>[NUMERO TOTAL DE FEEDBACKS NEGATIVOS]</td>\n" +
+                        "           </tr>\n" +
+                        "           <tr>\n" +
+                        "               <td>%% de feedbacks neutros</td>\n" +
+                        "               <td>[NUMERO TOTAL DE FEEDBACKS NEUTROS]</td>\n" +
+                        "           </tr>\n" +
+                        "           <tr>\n" +
+                        "               <td>%% de feedbacks inconclusivos</td>\n" +
+                        "               <td>[NUMERO TOTAL DE FEEDBACKS INCONCLUSIVOS]</td>\n" +
+                        "           </tr>\n" +
+                        "       </tbody>\n" +
+                        "   </table>\n" +
+                        "   <h2>Principais funcionalidades solicitadas:</h2>\n" +
+                        "   <ul>\n" +
+                        "       [LISTAR AQUI AS PRINCIPAIS FUNCIONALIDADES DETALHADAS, CORRESPONDETE A CHAVE reason.principalFeatures]\n" +
+                        "   </ul>\n" +
+                        "</div>\n",
+                reason.toString()
+        );
+    }
+
 }

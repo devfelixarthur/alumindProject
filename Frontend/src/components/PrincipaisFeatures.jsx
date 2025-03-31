@@ -9,23 +9,10 @@ import {
 } from "@chakra-ui/react";
 import { useState } from "react";
 
-const featuresData = [
-  "Melhoria do Onboarding e Primeiros Passos(Peso: 5)",
-  "Coleta e Utilização de Feedback do Usuário(Peso: 5)",
-  "Aprimoramento da Navegação e Usabilidade da Plataforma(Peso: 4)",
-  "Personalização e Acompanhamento de Estudos(Peso: 4)",
-  "Aumento do Engajamento e Interação na Comunidade (Fórum)(Peso: 3)",
-  "Implementação de Novas Funcionalidades e Recursos(Peso: 2)",
-  "Aprimoramento da Interatividade nas Aulas(Peso: 2)",
-  "Facilitar a Edição do Perfil do Usuário(Peso: 1)",
-  "Incentivo à Avaliação da Plataforma(Peso: 1)",
-  "Destaque de Avaliações Positivas(Peso: 1)",
-  "Integração com Outras Ferramentas(Peso: 1)"  
-];
-
 const ITEMS_PER_PAGE = 5;
 
-export default function PrincipaisFeatures() {
+export default function PrincipaisFeatures({ data }) {
+  const featuresData = data?.principalFeatures || [];
   const [currentPage, setCurrentPage] = useState(0);
 
   const totalPages = Math.ceil(featuresData.length / ITEMS_PER_PAGE);

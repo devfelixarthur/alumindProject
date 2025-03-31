@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/feedbacks")
 public class FeedbacksController {
@@ -31,8 +33,10 @@ public class FeedbacksController {
               @RequestParam(required = false) Long id,
               @RequestParam(required = false) String sentiment,
               @RequestParam (defaultValue = "30") Integer size,
-              @RequestParam (defaultValue = "0") Integer page) {
-        return ResponseEntity.ok(feedbacksService.searchFeedbacksByFields(id, sentiment, size, page));
+              @RequestParam (defaultValue = "0") Integer page,
+              @RequestParam (required = false, defaultValue = "") String dtStart,
+              @RequestParam (required = false, defaultValue = "") String dtEnd) {
+        return ResponseEntity.ok(feedbacksService.searchFeedbacksByFields(id, sentiment, size, page, dtStart, dtEnd));
     }
 
     @GetMapping("/semanalMetrics")

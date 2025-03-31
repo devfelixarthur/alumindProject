@@ -24,6 +24,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -50,7 +52,7 @@ public class FeedbacksService {
         Feedback feedback = new Feedback();
         feedback.setSentiment(responseLLMDTO.getSentiment());
         feedback.setOriginalFeedback(requestRegisterFeedbackDTO.feedback());
-        feedback.setDtRegister(LocalDateTime.now());
+        feedback.setDtRegister(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toLocalDateTime());
 
         Feedback savedFeedback = feedbackRepository.save(feedback);
 
@@ -60,7 +62,7 @@ public class FeedbacksService {
                     requestedFeature.setReason(reasons.getReason());
                     requestedFeature.setCode(reasons.getCode());
                     requestedFeature.setFeedback(savedFeedback);
-                    requestedFeature.setDtRegister(LocalDateTime.now());
+                    requestedFeature.setDtRegister(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toLocalDateTime());
                     requestedFeatureRepository.save(requestedFeature);
 
                     return requestedFeature;
@@ -129,9 +131,14 @@ public class FeedbacksService {
                 "NEUTRO".equalsIgnoreCase(String.valueOf(feedback.getSentiment()))
         ).count();
 
+        Long inconclusiveFeedbacks = feedbacks.stream().filter(feedback ->
+                "INCONCLUSIVO".equalsIgnoreCase(String.valueOf(feedback.getSentiment()))
+        ).count();
+
         Double positivesPercentage = (count > 0) ? roundToFourDecimalPlaces((positivesFeedbacks * 100.0 / count)) : 0.0;
         Double negativePercentage = (count > 0) ? roundToFourDecimalPlaces((negativeFeedbacks * 100.0 / count)) : 0.0;
         Double neutralPercentage = (count > 0) ? roundToFourDecimalPlaces((neutralFeedbacks * 100.0 / count)) : 0.0;
+        Double inconclusivePercentage = (count > 0) ? roundToFourDecimalPlaces((inconclusiveFeedbacks * 100.0 / count)) : 0.0;
 
         List<RequestedFeatureDTO> requestedFeaturesDTO = feedbacks.stream()
                 .flatMap(feedback -> feedback.getRequestedFeatures().stream())
@@ -151,9 +158,11 @@ public class FeedbacksService {
         semanalMetricsDTO.setPositivesFeedbacks(positivesFeedbacks);
         semanalMetricsDTO.setNegativeFeedbacks(negativeFeedbacks);
         semanalMetricsDTO.setNeutralFeedbacks(neutralFeedbacks);
+        semanalMetricsDTO.setInconclusiveFeedbacks(inconclusiveFeedbacks);
         semanalMetricsDTO.setPositivesPercentage(positivesPercentage);
         semanalMetricsDTO.setNegativePercentage(negativePercentage);
         semanalMetricsDTO.setNeutralPercentage(neutralPercentage);
+        semanalMetricsDTO.setInconclusivePercentage(inconclusivePercentage);
         semanalMetricsDTO.setFeatures(features);
 
         List<String> principalFeatures = llmService.analysePrincipalFeatures(features);
@@ -170,7 +179,30 @@ public class FeedbacksService {
     }
 
     @Transactional
-    public ReponseFeedbascksbyFieldsDTO searchFeedbacksByFields(Long id, String sentiment, Integer size, Integer page) {
+    public ReponseFeedbascksbyFieldsDTO searchFeedbacksByFields(Long id, String sentiment, Integer size, Integer page, String dtStart, String dtEnd) {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        LocalDate startDate;
+        LocalDate endDate;
+
+        if (dtStart.isEmpty() || dtEnd.isEmpty()) {
+            endDate = LocalDate.now();
+            startDate = endDate.minusDays(365);
+        } else {
+            try {
+                startDate = LocalDate.parse(dtStart, formatter);
+                endDate = LocalDate.parse(dtEnd, formatter);
+
+                if (startDate.isAfter(endDate)) {
+                    throw new BadRequestException("Invalid Date Range", "Start date cannot be after end date.");
+                }
+            } catch (DateTimeParseException e) {
+                throw new BadRequestException("Invalid Date Format", "Date must be in dd/MM/yyyy format.");
+            }
+        }
+
+        LocalDateTime startDateTime = startDate.atStartOfDay();
+        LocalDateTime endDateTime = endDate.atTime(23, 59, 59);
+
         if (size > 100 || size <= 0) {
             throw new BadRequestException("Size must be a number between 1 and 100.");
         }
@@ -186,9 +218,7 @@ public class FeedbacksService {
             }
         }
 
-
-
-        Page<Feedback> feddbacksPage = feedbackRepository.findFeedbacksByIdAndSentiment(id, sentimentEnum, pageable);
+        Page<Feedback> feddbacksPage = feedbackRepository.findFeedbacksByIdAndSentiment(id, sentimentEnum, startDateTime, endDateTime, pageable);
 
         Optional.ofNullable(feddbacksPage)
                 .filter(p -> !p.isEmpty())
@@ -211,8 +241,8 @@ public class FeedbacksService {
         result.setInfoPage(infoPage);
 
         return result;
-
     }
+
 
     @Transactional
     public FeedbackDTO getFeedbackDetails(Long id) {
@@ -223,4 +253,5 @@ public class FeedbacksService {
         return result;
 
     }
+
 }

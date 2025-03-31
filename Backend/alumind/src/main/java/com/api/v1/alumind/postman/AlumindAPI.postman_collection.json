@@ -1,0 +1,142 @@
+{
+	"info": {
+		"_postman_id": "215b71b9-620a-49e1-a482-080758c68ff7",
+		"name": "AlumindAPI",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24823254"
+	},
+	"item": [
+		{
+			"name": "Registrar Feedback",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "    {\r\n      \"feedback\": \"Tenho achado o sistema bem organizado, porém a busca por conteúdos ainda é limitada. Seria ótimo implementar uma busca por palavra-chave ou filtros por tema, como estresse, foco ou autoestima. Também sinto falta de uma área para salvar favoritos.\"\r\n    }\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/feedbacks/register",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feedbacks",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Verificar Métricas",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feedbacks/semanalMetrics?dtStart=28/03/2025&dtEnd=30/03/2025",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feedbacks",
+						"semanalMetrics"
+					],
+					"query": [
+						{
+							"key": "dtStart",
+							"value": "28/03/2025"
+						},
+						{
+							"key": "dtEnd",
+							"value": "30/03/2025"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Feedbacks Filtrados",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feedbacks/searchFeedbacksByFields",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feedbacks",
+						"searchFeedbacksByFields"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "1",
+							"disabled": true
+						},
+						{
+							"key": "sentiment",
+							"value": "INCONCLUSIVO",
+							"disabled": true
+						},
+						{
+							"key": "size",
+							"value": "100",
+							"disabled": true
+						},
+						{
+							"key": "page",
+							"value": "0",
+							"disabled": true
+						},
+						{
+							"key": "dtStart",
+							"value": "01/03/2025",
+							"disabled": true
+						},
+						{
+							"key": "dtEnd",
+							"value": "30/03/2025",
+							"disabled": true
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Buscar Feedback By Id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/feedbacks/feedbackDetails/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"feedbacks",
+						"feedbackDetails",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

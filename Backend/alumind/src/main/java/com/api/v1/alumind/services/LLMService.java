@@ -2,6 +2,7 @@ package com.api.v1.alumind.services;
 
 import com.api.v1.alumind.dtos.reponses.RequestedFeatureDTO;
 import com.api.v1.alumind.dtos.reponses.ResponseLLMDTO;
+import com.api.v1.alumind.dtos.reponses.SemanalMetricsDTO;
 import com.api.v1.alumind.enums.Sentiment;
 import com.api.v1.alumind.exceptions.BadGatewayException;
 import com.api.v1.alumind.exceptions.BadRequestException;
@@ -63,6 +64,12 @@ public class LLMService {
         String promptAnalysis = PromptUtils.getPromptAnalysisFeatures(features);
         String jsonResponse = sendRequestToLlm(promptAnalysis);
         return parseJsonResponsePrincipalFeatures(jsonResponse);
+    }
+
+    public String generateMessageEmail(SemanalMetricsDTO data) {
+        String promptGenerateEmail = PromptUtils.getPromptGenerateEmail(data);
+        String jsonResponse = sendRequestToLlm(promptGenerateEmail);
+        return parseJsonResponseEmail(jsonResponse);
     }
 
     private ResponseLLMDTO parseJsonResponse(String jsonResponse) {
@@ -169,6 +176,35 @@ public class LLMService {
         return principalFeatures;
     }
 
+    public String parseJsonResponseEmail(String jsonResponse) {
+        try {
+            JsonNode rootNode = objectMapper.readTree(jsonResponse);
+            JsonNode candidatesNode = rootNode.path("candidates");
+
+            if (candidatesNode.isArray() && candidatesNode.size() > 0) {
+                JsonNode contentNode = candidatesNode.get(0).path("content");
+                JsonNode partsNode = contentNode.path("parts");
+
+                if (partsNode.isArray() && partsNode.size() > 0) {
+                    String content = partsNode.get(0).path("text").asText();
+
+                    content = content.replace("```html", "").replace("```", "").trim();
+
+                    return content;
+                } else {
+                    throw new BadRequestException("The LLM response is not in the expected format. Missing 'parts' array.");
+                }
+            } else {
+                throw new BadRequestException("The LLM response is not in the expected format. Missing 'candidates' array.");
+            }
+        } catch (BadRequestException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new BadGatewayException("Error processing the LLM API response", e);
+        }
+    }
+
+
     @Transactional
     public String generateUniqueCodeForReasonGEMINI(String reason) {
         String generatedCode = "";
@@ -192,7 +228,7 @@ public class LLMService {
             case "INCONCLUSIVO":
                 return Sentiment.INCONCLUSIVO;
             default:
-                throw new BadRequestException("Sentiment value is not recognized: " + sentiment);
+                throw new BadRequestException("Sentiment value is not recognized.");
         }
     }
 
@@ -220,4 +256,5 @@ public class LLMService {
             throw new BadGatewayException("Error processing the AI response", e);
         }
     }
+
 }

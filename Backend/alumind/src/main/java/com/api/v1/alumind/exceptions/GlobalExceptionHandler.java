@@ -9,6 +9,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
@@ -20,6 +21,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+@ControllerAdvice
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -104,10 +106,10 @@ public class GlobalExceptionHandler {
 
             response.put("description", Map.of(
                     "message", String.format(
-                            "O parâmetro '%s' recebeu um valor inválido: '%s'. Esperado: '%s'.",
+                            "The parameter '%s' received an invalid value: '%s'. Expected: '%s'.",
                             typeMismatchEx.getName(),
                             typeMismatchEx.getValue(),
-                            typeMismatchEx.getRequiredType() != null ? typeMismatchEx.getRequiredType().getSimpleName() : "desconhecido"
+                            typeMismatchEx.getRequiredType() != null ? typeMismatchEx.getRequiredType().getSimpleName() : "Unknown"
                     )
             ));
         }

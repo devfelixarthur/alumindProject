@@ -5,9 +5,9 @@ services:
     image: 'postgres:latest'
     container_name: postgres_container
     environment:
-      - 'POSTGRES_USER=postgres'
-      - 'POSTGRES_PASSWORD=admin'
-      - 'POSTGRES_DB=postgres'
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=postgres
     ports:
       - '5432:5432'
     networks:
@@ -18,9 +18,10 @@ services:
       timeout: 5s
       retries: 5
 
-  alumind-app:
+  backend:
     build:
-      context: .
+      context: ./Backend/alumind
+      dockerfile: Dockerfile
     container_name: alumind_app
     ports:
       - "8080:8080"
@@ -28,14 +29,31 @@ services:
       - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=admin
+      - STAKHOLDERS_EMAILS="dev.felixarthur@gmail.com"
     depends_on:
-      - postgres
+      postgres:
+        condition: service_healthy
     networks:
       - alumind_network
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health"]
-      interval: 30s
+      interval: 5s
+      timeout: 5s
       retries: 5
+
+  frontend:
+    build:
+      context: ./Frontend
+      dockerfile: Dockerfile
+    container_name: frontend_container
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    networks:
+      - alumind_network
+    tty: true
+
 
 networks:
   alumind_network:

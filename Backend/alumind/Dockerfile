@@ -7,9 +7,8 @@ COPY mvnw .
 COPY .mvn .mvn
 COPY pom.xml .
 COPY src src
-COPY src/main/resources/application.properties src/main/resources/application.properties
 
-RUN ./mvnw clean package -DskipTests
+RUN chmod +x ./mvnw && ./mvnw clean package -DskipTests
 
 EXPOSE 8080
 

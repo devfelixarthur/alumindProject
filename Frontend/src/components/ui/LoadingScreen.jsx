@@ -22,7 +22,7 @@ const LoadingScreen = () => {
         zIndex: 9999,
       }}
     >
-      <CircularProgress color="secondary" />
+      <CircularProgress color="secondary" size={100} sx={{ color: '#1a009e' }}/>
     </Box>
   );
 };
