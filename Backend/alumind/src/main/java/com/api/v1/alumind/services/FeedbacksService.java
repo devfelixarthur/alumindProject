@@ -24,6 +24,8 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
@@ -50,7 +52,7 @@ public class FeedbacksService {
         Feedback feedback = new Feedback();
         feedback.setSentiment(responseLLMDTO.getSentiment());
         feedback.setOriginalFeedback(requestRegisterFeedbackDTO.feedback());
-        feedback.setDtRegister(LocalDateTime.now());
+        feedback.setDtRegister(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toLocalDateTime());
 
         Feedback savedFeedback = feedbackRepository.save(feedback);
 
@@ -60,7 +62,7 @@ public class FeedbacksService {
                     requestedFeature.setReason(reasons.getReason());
                     requestedFeature.setCode(reasons.getCode());
                     requestedFeature.setFeedback(savedFeedback);
-                    requestedFeature.setDtRegister(LocalDateTime.now());
+                    requestedFeature.setDtRegister(ZonedDateTime.now(ZoneId.of("America/Sao_Paulo")).toLocalDateTime());
                     requestedFeatureRepository.save(requestedFeature);
 
                     return requestedFeature;
