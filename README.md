@@ -22,6 +22,37 @@ A seguir, estão os passos para configurar e executar o projeto em seu ambiente 
 
 ### Passo 1: Subir o Projeto Usando o Docker Compose
 
+### Variáveis de Ambiente no Docker
+
+Quando executado com Dockerfile, as variáveis de ambiente para a aplicação Spring Boot são configuradas diretamente no container. Isso simplifica a configuração, pois não é necessário modificar arquivos de propriedades diretamente.
+
+O arquivo `docker-compose.yml` define essas variáveis para o serviço `backend`:
+
+```
+yaml:
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgres:5432/postgres
+      - SPRING_DATASOURCE_USERNAME=postgres
+      - SPRING_DATASOURCE_PASSWORD=admin
+      - STAKHOLDERS_EMAILS="dev.felixarthur@gmail.com"
+
+```
+      
+      
+### Executando Localmente (Sem Docker)
+
+Se você precisar executar a aplicação Spring Boot localmente (fora do Docker), será necessário fornecer as configurações do banco de dados e outras propriedades diretamente no arquivo `application.properties` ou `application.yml` da aplicação Spring.
+
+As propriedades que precisam ser configuradas são equivalentes às variáveis de ambiente usadas no Docker:
+
+```properties
+spring.datasource.url=jdbc:postgresql://localhost:5432/postgres
+spring.datasource.username=postgres
+spring.datasource.password=admin
+stakeholders.emails=dev.felixarthur@gmail.com
+```
+
+
 1. **Clone o repositório**:
 
     ```bash
@@ -95,6 +126,8 @@ Algumas variáveis de ambiente importantes para o backend:
 - `SPRING_DATASOURCE_URL`: URL de conexão com o banco de dados.
 - `SPRING_DATASOURCE_USERNAME`: Nome de usuário do banco de dados.
 - `SPRING_DATASOURCE_PASSWORD`: Senha do banco de dados.
+- `STAKHOLDERS_EMAILS`: Lista de emails separados por `","`.
+
 
 ### Backend (application.properties):
 
