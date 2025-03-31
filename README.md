@@ -154,6 +154,8 @@ Poderá também alterar a variável STAKHOLDERS_EMAILS do docker-compose
 
 **Após essa configuração, basta reiniciar a aplicação para testar o envio do relatório semanal.**
 
+[Acesse a documentação da API](https://documenter.getpostman.com/view/24823254/2sB2cPkRaf)
+
 Se tiver qualquer dúvida, entre em contato!
 
 WhatsApp: (21) 97306-3532
