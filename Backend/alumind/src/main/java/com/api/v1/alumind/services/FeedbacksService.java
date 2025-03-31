@@ -131,9 +131,14 @@ public class FeedbacksService {
                 "NEUTRO".equalsIgnoreCase(String.valueOf(feedback.getSentiment()))
         ).count();
 
+        Long inconclusiveFeedbacks = feedbacks.stream().filter(feedback ->
+                "INCONCLUSIVO".equalsIgnoreCase(String.valueOf(feedback.getSentiment()))
+        ).count();
+
         Double positivesPercentage = (count > 0) ? roundToFourDecimalPlaces((positivesFeedbacks * 100.0 / count)) : 0.0;
         Double negativePercentage = (count > 0) ? roundToFourDecimalPlaces((negativeFeedbacks * 100.0 / count)) : 0.0;
         Double neutralPercentage = (count > 0) ? roundToFourDecimalPlaces((neutralFeedbacks * 100.0 / count)) : 0.0;
+        Double inconclusivePercentage = (count > 0) ? roundToFourDecimalPlaces((inconclusiveFeedbacks * 100.0 / count)) : 0.0;
 
         List<RequestedFeatureDTO> requestedFeaturesDTO = feedbacks.stream()
                 .flatMap(feedback -> feedback.getRequestedFeatures().stream())
@@ -153,9 +158,11 @@ public class FeedbacksService {
         semanalMetricsDTO.setPositivesFeedbacks(positivesFeedbacks);
         semanalMetricsDTO.setNegativeFeedbacks(negativeFeedbacks);
         semanalMetricsDTO.setNeutralFeedbacks(neutralFeedbacks);
+        semanalMetricsDTO.setInconclusiveFeedbacks(inconclusiveFeedbacks);
         semanalMetricsDTO.setPositivesPercentage(positivesPercentage);
         semanalMetricsDTO.setNegativePercentage(negativePercentage);
         semanalMetricsDTO.setNeutralPercentage(neutralPercentage);
+        semanalMetricsDTO.setInconclusivePercentage(inconclusivePercentage);
         semanalMetricsDTO.setFeatures(features);
 
         List<String> principalFeatures = llmService.analysePrincipalFeatures(features);
@@ -246,4 +253,5 @@ public class FeedbacksService {
         return result;
 
     }
+
 }

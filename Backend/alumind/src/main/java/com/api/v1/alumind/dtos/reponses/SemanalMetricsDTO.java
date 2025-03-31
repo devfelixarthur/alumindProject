@@ -15,9 +15,11 @@ public class SemanalMetricsDTO {
     private Long positivesFeedbacks;
     private Long negativeFeedbacks;
     private Long neutralFeedbacks;
+    private Long inconclusiveFeedbacks;
     private Double positivesPercentage;
     private Double negativePercentage;
     private Double neutralPercentage;
+    private Double inconclusivePercentage;
     private List<String> principalFeatures;
     private List<RequestedFeatureDTO> features;
 }
