@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "215b71b9-620a-49e1-a482-080758c68ff7",
 		"name": "AlumindAPI",
+		"description": "A **Alumind API** é um conjunto de endpoints que permite interagir com a plataforma de feedbacks e relatórios de usuários. A API foi projetada para registrar, buscar e analisar feedbacks enviados pelos usuários do sistema, permitindo que você obtenha métricas detalhadas sobre o comportamento e as preferências dos usuários.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24823254"
 	},
@@ -13,7 +14,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "    {\r\n      \"feedback\": \"Tenho achado o sistema bem organizado, porém a busca por conteúdos ainda é limitada. Seria ótimo implementar uma busca por palavra-chave ou filtros por tema, como estresse, foco ou autoestima. Também sinto falta de uma área para salvar favoritos.\"\r\n    }\r\n",
+					"raw": "    {\r\n      \"feedback\": \"Tenho usado o Alumind com frequência e acho excelente o conteúdo das meditações e artigos. No entanto, seria muito bom ter um sistema de recompensas ou conquistas para manter a motivação em dia. Outra sugestão é permitir que a gente avalie os conteúdos após utilizá-los.\"\r\n    }\r\n",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -31,9 +32,78 @@
 						"feedbacks",
 						"register"
 					]
-				}
+				},
+				"description": "Este endpoint é utilizado para registrar um novo feedback fornecido por um usuário sobre o sistema. O feedback deve ser enviado no corpo da requisição no formato JSON. A resposta será uma confirmação da criação do feedback."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Registrar Feedback",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "    {\r\n      \"feedback\": \"Tenho usado o Alumind com frequência e acho excelente o conteúdo das meditações e artigos. No entanto, seria muito bom ter um sistema de recompensas ou conquistas para manter a motivação em dia. Outra sugestão é permitir que a gente avalie os conteúdos após utilizá-los.\"\r\n    }\r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/feedbacks/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"feedbacks",
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 31 Mar 2025 02:50:46 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 5,\n    \"sentiment\": \"POSITIVO\",\n    \"requestedFeatures\": [\n        {\n            \"code\": \"RECOMPENSA_MOTIVACAO\",\n            \"reason\": \"Implementar sistema de recompensas/conquistas para aumentar a motivação dos usuários.\"\n        },\n        {\n            \"code\": \"AVALIACAO_CONTEUDO\",\n            \"reason\": \"Permitir que usuários avaliem os conteúdos (meditações, artigos) após utilizá-los.\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "Verificar Métricas",
@@ -61,9 +131,79 @@
 							"value": "30/03/2025"
 						}
 					]
-				}
+				},
+				"description": "Este endpoint permite consultar as métricas de feedbacks recebidos em um intervalo de datas. Você deve fornecer as datas de início (`dtStart`) e fim (`dtEnd`) no formato `dd/MM/yyyy` para obter as métricas semanais."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Verificar Métricas",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/feedbacks/semanalMetrics?dtStart=28/03/2025&dtEnd=30/03/2025",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"feedbacks",
+								"semanalMetrics"
+							],
+							"query": [
+								{
+									"key": "dtStart",
+									"value": "28/03/2025"
+								},
+								{
+									"key": "dtEnd",
+									"value": "30/03/2025"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 31 Mar 2025 03:13:17 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"count\": 5,\n    \"positivesFeedbacks\": 5,\n    \"negativeFeedbacks\": 0,\n    \"neutralFeedbacks\": 0,\n    \"inconclusiveFeedbacks\": 0,\n    \"positivesPercentage\": 100,\n    \"negativePercentage\": 0,\n    \"neutralPercentage\": 0,\n    \"inconclusivePercentage\": 0,\n    \"principalFeatures\": [\n        \"Acesso e Personalização de Conteúdo(Peso: 4)\",\n        \"Aprimoramento da Experiência e Engajamento do Usuário(Peso: 3)\",\n        \"Disponibilidade Offline e Acesso em Situações Específicas(Peso: 2)\",\n        \"Suporte ao Usuário Especializado(Peso: 1)\"\n    ],\n    \"features\": [\n        {\n            \"code\": \"SUPORTE_ESPECIALISTA\",\n            \"reason\": \"Implementar canal de mensagens/chat para envio de dúvidas diretamente aos especialistas.\"\n        },\n        {\n            \"code\": \"RELATORIO_VISUAL\",\n            \"reason\": \"Implementar relatórios visuais com gráficos da evolução do usuário no app.\"\n        },\n        {\n            \"code\": \"PAGINA_PERSONALIZAVEL\",\n            \"reason\": \"Permitir maior personalização da página inicial com conteúdos preferidos.\"\n        },\n        {\n            \"code\": \"BUSCA_PALAVRAS\",\n            \"reason\": \"Implementar busca por palavra-chave e filtros temáticos para facilitar a localização de conteúdos.\"\n        },\n        {\n            \"code\": \"INSIGHTS_SEMANAIS\",\n            \"reason\": \"Fornecer insights semanais sobre o comportamento emocional e uso do aplicativo.\"\n        },\n        {\n            \"code\": \"AVALIACAO_CONTEUDO\",\n            \"reason\": \"Permitir que usuários avaliem os conteúdos (meditações, artigos) após utilizá-los.\"\n        },\n        {\n            \"code\": \"RECOMPENSA_MOTIVACAO\",\n            \"reason\": \"Implementar sistema de recompensas/conquistas para aumentar a motivação dos usuários.\"\n        },\n        {\n            \"code\": \"SALVAR_FAVORITOS\",\n            \"reason\": \"Criar área para salvar conteúdos favoritos para acesso rápido e personalizado.\"\n        },\n        {\n            \"code\": \"MEDITACAO_OFFLINE\",\n            \"reason\": \"Permitir download de meditações para acesso offline devido à indisponibilidade de internet.\"\n        },\n        {\n            \"code\": \"SESSAO_ESPECIFICA\",\n            \"reason\": \"Adicionar sessões com foco em situações difíceis como luto e crises de ansiedade.\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "Buscar Feedbacks Filtrados",
@@ -113,9 +253,101 @@
 							"disabled": true
 						}
 					]
-				}
+				},
+				"description": "Este endpoint permite buscar feedbacks filtrados com base em vários parâmetros, como ID, sentimento, intervalo de datas e tamanho da página. O endpoint suporta a paginação e pode retornar um conjunto de feedbacks que atendem aos critérios fornecidos."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Buscar Feedbacks Filtrados",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/feedbacks/searchFeedbacksByFields",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"feedbacks",
+								"searchFeedbacksByFields"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "1",
+									"disabled": true
+								},
+								{
+									"key": "sentiment",
+									"value": "INCONCLUSIVO",
+									"disabled": true
+								},
+								{
+									"key": "size",
+									"value": "100",
+									"disabled": true
+								},
+								{
+									"key": "page",
+									"value": "0",
+									"disabled": true
+								},
+								{
+									"key": "dtStart",
+									"value": "01/03/2025",
+									"disabled": true
+								},
+								{
+									"key": "dtEnd",
+									"value": "30/03/2025",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 31 Mar 2025 03:51:30 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"infoPage\": {\n        \"pageNumber\": 0,\n        \"pageSize\": 30,\n        \"totalRecords\": 5,\n        \"totalPages\": 1,\n        \"hasPreviousPage\": false,\n        \"hasNextPage\": false\n    },\n    \"feedbacks\": [\n        {\n            \"id\": 1,\n            \"originalFeedback\": \"Tenho achado o sistema bem organizado, porém a busca por conteúdos ainda é limitada. Seria ótimo implementar uma busca por palavra-chave ou filtros por tema, como estresse, foco ou autoestima. Também sinto falta de uma área para salvar favoritos.\",\n            \"sentiment\": \"POSITIVO\",\n            \"requestedFeatures\": [\n                {\n                    \"code\": \"BUSCA_PALAVRAS\",\n                    \"reason\": \"Implementar busca por palavra-chave e filtros temáticos para facilitar a localização de conteúdos.\"\n                },\n                {\n                    \"code\": \"SALVAR_FAVORITOS\",\n                    \"reason\": \"Criar área para salvar conteúdos favoritos para acesso rápido e personalizado.\"\n                }\n            ],\n            \"dtRegister\": \"30/03/2025 23:33:28\"\n        },\n        {\n            \"id\": 2,\n            \"originalFeedback\": \"Uso o Alumind quase todos os dias, mas sinto falta de sessões mais específicas voltadas a quem está passando por situações difíceis, como luto ou crises de ansiedade. Além disso, queria poder personalizar mais a página inicial com os conteúdos que mais gosto.\",\n            \"sentiment\": \"POSITIVO\",\n            \"requestedFeatures\": [\n                {\n                    \"code\": \"SESSAO_ESPECIFICA\",\n                    \"reason\": \"Adicionar sessões com foco em situações difíceis como luto e crises de ansiedade.\"\n                },\n                {\n                    \"code\": \"PAGINA_PERSONALIZAVEL\",\n                    \"reason\": \"Permitir maior personalização da página inicial com conteúdos preferidos.\"\n                }\n            ],\n            \"dtRegister\": \"30/03/2025 23:50:30\"\n        },\n        {\n            \"id\": 3,\n            \"originalFeedback\": \"Seria muito útil poder baixar os conteúdos de meditação para ouvir offline, pois nem sempre estou com internet disponível. Além disso, queria conseguir enviar dúvidas diretamente para os especialistas, talvez através de um canal de mensagens ou chat integrado.\",\n            \"sentiment\": \"POSITIVO\",\n            \"requestedFeatures\": [\n                {\n                    \"code\": \"MEDITACAO_OFFLINE\",\n                    \"reason\": \"Permitir download de meditações para acesso offline devido à indisponibilidade de internet.\"\n                },\n                {\n                    \"code\": \"SUPORTE_ESPECIALISTA\",\n                    \"reason\": \"Implementar canal de mensagens/chat para envio de dúvidas diretamente aos especialistas.\"\n                }\n            ],\n            \"dtRegister\": \"30/03/2025 23:50:34\"\n        },\n        {\n            \"id\": 4,\n            \"originalFeedback\": \"O app tem me ajudado bastante na rotina, mas tenho sentido falta de relatórios visuais que mostrem minha evolução com base nas atividades completadas. Seria interessante ter gráficos e insights semanais sobre meu comportamento emocional e uso do app.\",\n            \"sentiment\": \"POSITIVO\",\n            \"requestedFeatures\": [\n                {\n                    \"code\": \"RELATORIO_VISUAL\",\n                    \"reason\": \"Implementar relatórios visuais com gráficos da evolução do usuário no app.\"\n                },\n                {\n                    \"code\": \"INSIGHTS_SEMANAIS\",\n                    \"reason\": \"Fornecer insights semanais sobre o comportamento emocional e uso do aplicativo.\"\n                }\n            ],\n            \"dtRegister\": \"30/03/2025 23:50:38\"\n        },\n        {\n            \"id\": 5,\n            \"originalFeedback\": \"Tenho usado o Alumind com frequência e acho excelente o conteúdo das meditações e artigos. No entanto, seria muito bom ter um sistema de recompensas ou conquistas para manter a motivação em dia. Outra sugestão é permitir que a gente avalie os conteúdos após utilizá-los.\",\n            \"sentiment\": \"POSITIVO\",\n            \"requestedFeatures\": [\n                {\n                    \"code\": \"RECOMPENSA_MOTIVACAO\",\n                    \"reason\": \"Implementar sistema de recompensas/conquistas para aumentar a motivação dos usuários.\"\n                },\n                {\n                    \"code\": \"AVALIACAO_CONTEUDO\",\n                    \"reason\": \"Permitir que usuários avaliem os conteúdos (meditações, artigos) após utilizá-los.\"\n                }\n            ],\n            \"dtRegister\": \"30/03/2025 23:50:46\"\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "Buscar Feedback By Id",
@@ -134,9 +366,70 @@
 						"feedbackDetails",
 						"1"
 					]
-				}
+				},
+				"description": "Este endpoint permite buscar os detalhes de um feedback específico através do seu ID. Você deve fornecer o `id` do feedback no caminho da URL para obter os detalhes completos do feedback registrado."
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Buscar Feedbacks Filtrados Copy",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/feedbacks/feedbackDetails/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"feedbacks",
+								"feedbackDetails",
+								"1"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Vary",
+							"value": "Origin"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Method"
+						},
+						{
+							"key": "Vary",
+							"value": "Access-Control-Request-Headers"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Transfer-Encoding",
+							"value": "chunked"
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 31 Mar 2025 03:51:38 GMT"
+						},
+						{
+							"key": "Keep-Alive",
+							"value": "timeout=60"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"id\": 1,\n    \"originalFeedback\": \"Tenho achado o sistema bem organizado, porém a busca por conteúdos ainda é limitada. Seria ótimo implementar uma busca por palavra-chave ou filtros por tema, como estresse, foco ou autoestima. Também sinto falta de uma área para salvar favoritos.\",\n    \"sentiment\": \"POSITIVO\",\n    \"requestedFeatures\": [\n        {\n            \"code\": \"BUSCA_PALAVRAS\",\n            \"reason\": \"Implementar busca por palavra-chave e filtros temáticos para facilitar a localização de conteúdos.\"\n        },\n        {\n            \"code\": \"SALVAR_FAVORITOS\",\n            \"reason\": \"Criar área para salvar conteúdos favoritos para acesso rápido e personalizado.\"\n        }\n    ],\n    \"dtRegister\": \"30/03/2025 23:33:28\"\n}"
+				}
+			]
 		}
 	]
 }
