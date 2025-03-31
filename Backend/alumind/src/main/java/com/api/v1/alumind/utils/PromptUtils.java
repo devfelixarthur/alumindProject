@@ -19,7 +19,7 @@ public class PromptUtils {
                         "{\n" +
                         "  \"mensagem\": \"Não foi possível interpretar o feedback fornecido. Para nos ajudar a entender suas necessidades, por favor, forneça exemplos concretos e descrições detalhadas de suas sugestões ou problemas. Exemplo: 'Gostaria que a função X fosse melhorada porque...' ou 'Encontrei um problema ao usar a função Y...'\n" +
                         "}\n" +
-                        "5. Retorne uma lista de sugestões de funcionalidades, com seu respectivo código e razão. Caso haja múltiplas sugestões, elas devem ser retornadas como um array de objetos, como exemplificado abaixo:\n" +
+                        "5. Retorne uma lista de sugestões de funcionalidades, com seu respectivo código e razão (e nessa razão especifique o porquê implementar a funcionalidade seria importante). Caso haja múltiplas sugestões, elas devem ser retornadas como um array de objetos, como exemplificado abaixo:\n" +
                         "[\n" +
                         "  \"sentiment\": \"[Generated Sentiment]\"\n" +
                         "    {\n" +
