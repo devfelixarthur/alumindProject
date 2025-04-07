@@ -43,7 +43,7 @@ public class SchuedulerAPI {
     private EmailsTemplate emailsTemplate;
 
     //@Scheduled(cron = "0 0 7 * * SAT")
-        @EventListener(ApplicationReadyEvent.class)
+    // @EventListener(ApplicationReadyEvent.class)
         public void executarBuscaPeriodica() {
             try {
                 List<String> emails = Arrays.asList(stakeholdersEmails.split(";"));

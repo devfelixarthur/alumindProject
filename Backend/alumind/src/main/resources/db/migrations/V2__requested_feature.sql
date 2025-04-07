@@ -1,0 +1,8 @@
+CREATE TABLE requested_feature (
+    id BIGSERIAL PRIMARY KEY,
+    code VARCHAR(75) NOT NULL UNIQUE,
+    reason TEXT NOT NULL,
+    feedback_id BIGINT NOT NULL,
+    dt_register TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
+    FOREIGN KEY (feedback_id) REFERENCES feedbacks(id) ON DELETE CASCADE
+);

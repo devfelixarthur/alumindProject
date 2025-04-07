@@ -1,0 +1,6 @@
+CREATE TABLE feedbacks (
+    id BIGSERIAL PRIMARY KEY,
+    original_feedback TEXT NOT NULL,
+    sentiment VARCHAR(255) NOT NULL,
+    dt_register TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
+);

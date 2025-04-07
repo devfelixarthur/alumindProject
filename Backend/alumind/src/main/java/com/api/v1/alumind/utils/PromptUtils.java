@@ -9,7 +9,9 @@ import java.util.List;
 public class PromptUtils {
     public static String getPromptAnalysis(String feedback) {
         return String.format(
-                "Você é um analista experiente em análise de feedback de usuários e geração de sugestões de funcionalidades. Sua tarefa é analisar o feedback a seguir e gerar uma ou mais sugestões de melhorias claras e objetivas, com base na avaliação do usuário. Cada sugestão deve incluir um código único e uma razão explicando o porquê a sugestão é importante.\n\n" +
+                "Contexto da minha aplicação: A AluMind é uma startup que oferece um aplicativo focado em bem-estar e saúde mental, proporcionando aos usuários acesso a meditações guiadas, sessões de terapia, e conteúdos educativos sobre saúde mental. Com o alto crescimento da base de usuários, a AluMind está começando a ter gargalos para analisar feedbacks vindo dos usuários em diferentes plataformas (canais de atendimento ao cliente; comunidades no Discord; redes sociais). Portanto, nessa tarefa, você criará uma aplicação cuja responsabilidade seja de analisar os feedbacks vindos dos usuários, classificá-los a partir do seu sentimento e elencar as possíveis melhorias contidas neles." +
+                        "Você é um analista experiente em análise de feedback de usuários e geração de sugestões de funcionalidades. Sua tarefa é analisar o feedback a seguir e gerar uma ou mais sugestões de melhorias claras e objetivas, com base na avaliação do usuário. Cada sugestão deve incluir um código único e uma razão explicando o porquê a sugestão é importante.\n\n" +
+                        "Para a análise do feedback é necessário que consiga entender se o feedback está relacionado com o contexto da minha aplicação, afim de não permitir a análise e o cadastro de um feedback spam." +
                         "Feedback: %s\n\n" +
                         "Por favor, siga as instruções abaixo:\n" +
                         "1. Gere um código único para cada sugestão de funcionalidades. Cada código deve ter o formato 'PALAVRA_SEGUNDAPALAVRA' e não deve ultrapassar 75 caracteres. O código deve ter uma associação profunda com a sugestão, a palavra-chave de maior peso.\n" +
@@ -17,7 +19,7 @@ public class PromptUtils {
                         "3. Classifique o sentimento do feedback como 'POSITIVO', 'NEGATIVO', 'NEUTRO' ou 'INCONCLUSIVO'. O sentimento é crucial para entender a percepção do usuário e deverá ser gerado a partir do feedback enviado, entenda o contexto do feedback, palavras com bom, ótimo, feliz, são indicativos para sentimentos positivos sempre tente definir qual o sentimento do usuário no contexto do feedback.\n" +
                         "4. Caso o feedback fornecido seja irrelevante, sem sentido ou desconexo, retorne a seguinte mensagem em formato JSON:\n\n" +
                         "{\n" +
-                        "  \"mensagem\": \"Não foi possível interpretar o feedback fornecido. Para nos ajudar a entender suas necessidades, por favor, forneça exemplos concretos e descrições detalhadas de suas sugestões ou problemas. Exemplo: 'Gostaria que a função X fosse melhorada porque...' ou 'Encontrei um problema ao usar a função Y...'\n" +
+                        "  \"mensagem\": \"Não foi possível interpretar o feedback fornecido. [AQUI INSIRA O MOTIVO EXPLICANDO O POR QUE DE TER SIDO CLASSIFICADO COMO SPAM]\n" +
                         "}\n" +
                         "5. Retorne uma lista de sugestões de funcionalidades, com seu respectivo código e razão (e nessa razão especifique o porquê implementar a funcionalidade seria importante). Caso haja múltiplas sugestões, elas devem ser retornadas como um array de objetos, como exemplificado abaixo:\n" +
                         "[\n" +
@@ -51,7 +53,8 @@ public class PromptUtils {
 
     public static String getPromptAnalysisFeatures(List<RequestedFeatureDTO> reason) {
         return String.format(
-                "Você é um analista de dados especializado em identificar padrões e tendências em feedback de usuários. Sua tarefa é analisar a lista de sugestões de funcionalidades fornecida e identificar as queixas e padrões mais comuns nas *razões* apresentadas, atribuindo pesos para indicar a frequência e relevância de cada necessidade.\n\n" +
+                "Contexto da minha aplicação: A AluMind é uma startup que oferece um aplicativo focado em bem-estar e saúde mental, proporcionando aos usuários acesso a meditações guiadas, sessões de terapia, e conteúdos educativos sobre saúde mental. Com o alto crescimento da base de usuários, a AluMind está começando a ter gargalos para analisar feedbacks vindo dos usuários em diferentes plataformas (canais de atendimento ao cliente; comunidades no Discord; redes sociais). Portanto, nessa tarefa, você criará uma aplicação cuja responsabilidade seja de analisar os feedbacks vindos dos usuários, classificá-los a partir do seu sentimento e elencar as possíveis melhorias contidas neles." +
+                        "Você é um analista de dados especializado em identificar padrões e tendências em feedback de usuários. Sua tarefa é analisar a lista de sugestões de funcionalidades fornecida e identificar as queixas e padrões mais comuns nas *razões* apresentadas, atribuindo pesos para indicar a frequência e relevância de cada necessidade.\n\n" +
                         "Instruções:\n\n" +
                         "1.  Análise de Padrões nas Razões:\n" +
                         "    * Analise as *razões* fornecidas para cada funcionalidade.\n" +
@@ -85,7 +88,6 @@ public class PromptUtils {
     }
 
     public static String getPromptGenerateEmail(SemanalMetricsDTO reason) {
-        // Passando o JSON como string diretamente
         return String.format(
                 "Você é um assistente inteligente especializado em gerar e-mails em HTML com base em métricas de feedback de usuários. Sua tarefa é criar o corpo de um e-mail com as informações fornecidas.\n\n" +
                         "Dados fornecidos:\n\n" +

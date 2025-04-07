@@ -30,6 +30,9 @@ services:
       - SPRING_DATASOURCE_USERNAME=postgres
       - SPRING_DATASOURCE_PASSWORD=admin
       - STAKHOLDERS_EMAILS="dev.felixarthur@gmail.com"
+      - LLM_ROUTER=https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyAm0zteEqxMQymjgYi3jsF7WGwFO4F2IeU
+      - PASSWORD_EMAIL_SENDER=qavv lzee cakp rkei
+      - USERNAME_EMAIL_SENDER=dev.felixarthur@gmail.com
     depends_on:
       postgres:
         condition: service_healthy

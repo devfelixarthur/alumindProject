@@ -87,7 +87,10 @@ public class LLMService {
                     content = content.replace("```json", "").replace("```", "").trim();
 
                     if (content == null || content.isEmpty() || content.trim().toLowerCase().contains("não foi possível interpretar")) {
-                        throw new BadRequestException("Não foi possível interpretar o feedback fornecido. Para nos ajudar a entender suas necessidades, por favor, forneça exemplos concretos e descrições detalhadas de suas sugestões ou problemas. Por exemplo: 'Gostaria que a função X fosse melhorada porque...' ou 'Encontrei um problema ao usar a função Y...'");
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        JsonNode message = objectMapper.readTree(content);
+                        String error = message.path("mensagem").asText("");
+                        throw new BadRequestException(error);
                     }
 
 
