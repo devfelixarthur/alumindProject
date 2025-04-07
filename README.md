@@ -72,6 +72,7 @@ stakeholders.emails=dev.felixarthur@gmail.com
 
     - Backend estará disponível em http://localhost:8080.
     - Frontend estará disponível em http://localhost:5173.
+    - Swagger estará disponível em http://localhost:8080/swagger-ui/index.html#/
 
 ### Passo 2: Rodando Separadamente
 
@@ -127,6 +128,9 @@ Algumas variáveis de ambiente importantes para o backend:
 - `SPRING_DATASOURCE_USERNAME`: Nome de usuário do banco de dados.
 - `SPRING_DATASOURCE_PASSWORD`: Senha do banco de dados.
 - `STAKHOLDERS_EMAILS`: Lista de emails separados por `","`.
+- `LLM_ROUTER`: URL do modelo usado.
+- `USERNAME_EMAIL_SENDER`: Email cadastrado para o sender.
+- `PASSWORD_EMAIL_SENDER`: Senha do APP para envio de email.
 
 
 ### Backend (application.properties):
@@ -187,7 +191,7 @@ Poderá também alterar a variável STAKHOLDERS_EMAILS do docker-compose
 
 **Após essa configuração, basta reiniciar a aplicação para testar o envio do relatório semanal.**
 
-[Acesse a documentação da API](https://documenter.getpostman.com/view/24823254/2sB2cPkRaf)
+[Acesse a documentação da API via POSTMAN](https://documenter.getpostman.com/view/24823254/2sB2cPkRaf)
 
 Se tiver qualquer dúvida, entre em contato!
 
